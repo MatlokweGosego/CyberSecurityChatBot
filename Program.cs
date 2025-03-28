@@ -7,11 +7,14 @@ using System.Media;
 
 namespace CyberSecurityChatBot
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {
-            new Greeting() { };
+            Greeting greeting = new Greeting();
+            string userName = greeting.GetUserName();
+            Conversation conversation = new Conversation(userName);
+            conversation.Start();
         }
     }
 }
