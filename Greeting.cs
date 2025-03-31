@@ -28,6 +28,9 @@ namespace CyberSecurityChatBot
                     userName = "User1";
                 }
             }
+            Console.WriteLine("     ╔════════════════════════════════════════════╗");
+            Console.WriteLine($"    ║              Hello {userName}              ║");
+            Console.WriteLine("     ╚════════════════════════════════════════════╝");
             Console.WriteLine($"Hello {userName} ! I am your cybersecurity assistant. I am here to educate you about cybersecurity and help keep You safe online!");
             return userName;
         }
