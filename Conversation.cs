@@ -6,7 +6,7 @@ namespace CyberSecurityChatBot
     /// <summary>
     /// This class  handles the interactive cnversation between the user and the chatbot about various cybersecurity relayted concerns such as hishing, malware, password creation. 
     /// </summary>
-    public class Conversation // initilalizes a new intance fr the conversatin class to run 
+    public class Conversation // initializes a new intance fr the conversation class to run 
     {
         private string userName;// uses the username for a personalized experience
         public Conversation(string name) 
@@ -17,14 +17,14 @@ namespace CyberSecurityChatBot
          public void Start() { 
        
 
-            while (true) // the while loop that kees the conversation going while the application runs till the userexits the application 
+            while (true) // the while loop that keeps the conversation going while the application runs till the user exits the application 
             {
-                Console.Write("\nYou "); // promps the user for their input 
+                Console.Write("\nYou "); // prompts the user for their input 
                 string userInput = Console.ReadLine()?.ToLower().Trim();
                 if (userInput == "exit" || userInput == "Nothing" || userInput == "no")
                 {
                     Console.WriteLine($"Got it! {userName} ! If there,s anything you would want to ask me at a later time, I am availabke to assit. Enjoy the rest of your day.:)");
-                    break;// brekas when the user exits the application and displays a personalized message 
+                    break;// breaks when the user exits the application and displays a personalized message 
                 }
                 else if (string.IsNullOrEmpty(userInput))
                 {
@@ -72,7 +72,7 @@ namespace CyberSecurityChatBot
                 }
                 else if (words.Contains("safe") && words.Contains("browsing"))  // filters the response from the user to provide accurate response
                 {
-                    Console.WriteLine("\nChatbot: Here are some safe browsing tips:\n" + // resonses to questions related to safe browsing
+                    Console.WriteLine("\nChatbot: Here are some safe browsing tips:\n" + // responses to questions related to safe browsing
                         " - Keep your browser and operating system up to date.\n" +
                         " - Use a reputable antivirus software and keep it updated.\n" +
                         " - Be cautious about the websites you visit, especially when entering sensitive information.\n" +
