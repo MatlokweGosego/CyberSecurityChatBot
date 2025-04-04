@@ -7,8 +7,8 @@ namespace CyberSecurityChatBot
 {
     public class Greeting
     {
-        // this handles the greeting. It playes the voice welcome message, dislays the ASCII art and gets the usersname and stroes it in the username module
-        public Greeting() // the greeting constrcuto that initializes the voice greeting immedilatelt anddislays the ASCII art afer laying the voice greeting
+        // this handles the greeting. It plays the voice welcome message, displays the ASCII art and gets the usersname and stores it in the username module
+        public Greeting() // the greeting constrcutor that initializes the voice greeting immediately displays the ASCII art after playing the voice greeting
         {
             SoundPlayer player = new SoundPlayer(@"C:\Users\RC_Student_lab\source\repos\CyberSecurityChatBot\CyberSecurityAwarenessChatbotGreeting.wav");
             player.PlaySync(); // stps execution of the application to allow the voice greeting to play n full before the applicatin fully runs. 
@@ -44,7 +44,7 @@ namespace CyberSecurityChatBot
             //converts the image assesin to the image ath to an ASCII art 
             string characters = "@#$%&*!:'.' ";
             // CHARACTER GRADIENT FROM DARKEST TO LIGHTEST 
-            try // resiizes the image for console dispaly for niformity amoung differen console displays
+            try // resizes the image for console display for uniformity amoung different console displays
             {
                 Bitmap bitmap = new Bitmap(imagePath);
                 int width = 100;// the width in characters fr the ASCCII art
