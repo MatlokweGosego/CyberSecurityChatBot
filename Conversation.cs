@@ -90,8 +90,39 @@ namespace CyberSecurityChatBot
                     { 
                     "Great to know!"
                     }
-                }
+                },
 
+                { 
+                    "worried", new List<string> 
+                    {
+                    "It's understandable to feel worried about online threats. Let me share some tips to help you feel more secure.",
+                    "Don't worry, I'm here to help you understand how to stay safe online."
+                    }
+                },
+
+                { 
+                    "curious", new List<string> 
+                    {
+                    "That's great that you're curious! Asking questions is the first step to staying informed.",
+                    "Being curious about cybersecurity is a good thing! What would you like to know?"
+                     }
+                },
+
+                { 
+                    "frustrated", new List<string>
+                    {
+                    "I understand it can be frustrating dealing with online security. Let's break it down step by step.",
+                    "It's okay to feel frustrated. I'll try my best to make this clear for you."
+                    }
+                },
+
+                { 
+                    "unsure", new List<string> 
+                    {
+                    "It's alright to feel unsure.Let me reassure you. That's what I'm here for. Ask away!",
+                    "No problem at all. Let me clarify things for you."
+                    }
+                }
 
              };
         }
@@ -115,6 +146,18 @@ namespace CyberSecurityChatBot
 
                 bool responded = false;
                 string newQuery = null;
+
+                foreach (var keywordResponsePair in keywordResponses.Where(kvp => kvp.Key == "worried" || kvp.Key == "curious" || kvp.Key == "frustrated" || kvp.Key == "unsure"))
+                {
+                    if (userInput.Contains(keywordResponsePair.Key))
+                    {
+                        string response = GetRandomResponse(keywordResponsePair.Value);
+                        Console.WriteLine($"\nChatBot: {response}");
+                        responded = true;
+                        break;
+                    }
+                }
+
                 foreach (var keywordResponsePair in keywordResponses)
                 {
                     if (userInput.Contains(keywordResponsePair.Key))
@@ -126,7 +169,40 @@ namespace CyberSecurityChatBot
                         break;
                     }
                 }
-                if (!responded && currentQuery != null) { 
+
+                if (!responded)
+                {
+                    if (userInput.Contains("favourite") && userInput.Contains("Query") && !askedFavoriteQuery)
+                    {
+                        Console.WriteLine("\nChatBot: That's interesting! What makes you particularly interested in that?");
+                        favoriteQuery = currentQuery;
+                        askedFavoriteQuery = true;
+                        responded = true;
+                    }
+                    else if (userInput.Contains("interested") && userInput.Contains("in") && !askedFavoriteQuery)
+                    {
+                        string[] parts = userInput.Split(new string[] { "interested in" }, StringSplitOptions.None);
+                        if (parts.Length > 1)
+                        {
+                            favoriteQuery = parts[1].Trim();
+                            Console.WriteLine($"\nChatBot: Great! I'll remember that you're interested in {favoriteQuery}. It's a crucial part of staying safe online.");
+                            askedFavoriteQuery = true;
+                            responded = true;
+                        }
+                    }
+                    else if (favoriteQuery != null && (userInput.Contains("related to") || userInput.Contains("about")) && userInput.Contains(favoriteQuery))
+                    {
+                        if (keywordResponses.ContainsKey(favoriteQuery))
+                        {
+                            string response = GetRandomResponse(keywordResponses[favoriteQuery]);
+                            Console.WriteLine($"\nChatBot (Related to your interest in {favoriteQuery}): {response}");
+                            responded = true;
+                        }
+                    }
+                }
+
+                if (!responded && currentQuery != null)
+                {
 
                     if (userInput.Contains("more") && keywordResponses.ContainsKey(currentQuery))
                     {
@@ -147,10 +223,11 @@ namespace CyberSecurityChatBot
                     }
                 }
 
-                    if (!responded)
+                if (!responded)
                 {
                     Console.WriteLine("\nChatBot: I'm sorry, I didn't understand that. Please ask a question about cybersecurity.");
                 }
+
                 if (!responded)
                 {
 
@@ -187,7 +264,7 @@ namespace CyberSecurityChatBot
                     currentQuery = newQuery;
                 }
 
-                if (responded && favoriteQuery != null && random.Next(3) == 0) 
+                if (responded && favoriteQuery != null && random.Next(3) == 0)
                 {
                     if (keywordResponses.ContainsKey(favoriteQuery))
                     {
@@ -195,7 +272,8 @@ namespace CyberSecurityChatBot
                         Console.WriteLine($"\nChatBot (You seem interested in {favoriteQuery}): Here's another point: {followUpResponse}");
                     }
                 }
-        }
+             }
+            }
         private string GetRandomResponse(List<string> responses)
         {
             if (responses != null && responses.Count > 0)
