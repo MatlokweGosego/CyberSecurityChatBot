@@ -11,7 +11,9 @@ namespace CyberSecurityChatBot
         private string userName;// uses the username for a personalized experience
         private Dictionary<string, List<string>> keywordResponses;
         private Random random = new Random();
-        private string currentTopic = null;
+        private string currentQuery = null;
+        private string favoriteQuery = null;
+        private bool askedFavoriteQuery = false;
         public Conversation(string name) 
         {
             userName = name;
@@ -75,11 +77,26 @@ namespace CyberSecurityChatBot
                         " \nChatbot: Use antivirus software.\n" ,
                         " - Be careful about what you download or click on."
                     }
+                },
+                { 
+                    "favourite", new List<string> 
+                    { 
+                    "That's interesting!"
+                    }
+                },
+
+                { 
+                    "interested", new List<string> 
+                    { 
+                    "Great to know!"
+                    }
                 }
+
+
              };
         }
-        public void Start() { 
-       
+        public void Start() {
+
 
             while (true) // the while loop that keeps the conversation going while the application runs till the user exits the application 
             {
@@ -97,7 +114,7 @@ namespace CyberSecurityChatBot
                 }
 
                 bool responded = false;
-                string newTopic = null;
+                string newQuery = null;
                 foreach (var keywordResponsePair in keywordResponses)
                 {
                     if (userInput.Contains(keywordResponsePair.Key))
@@ -109,7 +126,28 @@ namespace CyberSecurityChatBot
                         break;
                     }
                 }
-                if (!responded &&currentTopic !=null)
+                if (!responded && currentQuery != null) { 
+
+                    if (userInput.Contains("more") && keywordResponses.ContainsKey(currentQuery))
+                    {
+
+                        string response = GetRandomResponse(keywordResponses[currentQuery]);
+                        Console.WriteLine($"\nChatBot (While we were talking about {currentQuery}): {response}");
+                        responded = true;
+                    }
+
+                    else if (userInput.Contains("confused") || userInput.Contains("details") || userInput.Contains("explain"))
+                    {
+                        if (keywordResponses.ContainsKey(currentQuery))
+                        {
+                            string response = GetRandomResponse(keywordResponses[currentQuery]);
+                            Console.WriteLine($"\nChatBot (More on {currentQuery}): {response}");
+                            responded = true;
+                        }
+                    }
+                }
+
+                    if (!responded)
                 {
                     Console.WriteLine("\nChatBot: I'm sorry, I didn't understand that. Please ask a question about cybersecurity.");
                 }
@@ -139,7 +177,24 @@ namespace CyberSecurityChatBot
                         responded = true;
                     }
                 }
-            }
+                if (!responded)
+                {
+                    Console.WriteLine("\nChatBot: I'm not sure I understand. Can you try rephrasing or ask about a different cybersecurity topic?");
+                    currentQuery = null;
+                }
+                else
+                {
+                    currentQuery = newQuery;
+                }
+
+                if (responded && favoriteQuery != null && random.Next(3) == 0) 
+                {
+                    if (keywordResponses.ContainsKey(favoriteQuery))
+                    {
+                        string followUpResponse = GetRandomResponse(keywordResponses[favoriteQuery]);
+                        Console.WriteLine($"\nChatBot (You seem interested in {favoriteQuery}): Here's another point: {followUpResponse}");
+                    }
+                }
         }
         private string GetRandomResponse(List<string> responses)
         {
