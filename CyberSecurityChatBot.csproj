@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleHelper.cs" />
     <Compile Include="Conversation.cs" />
     <Compile Include="Greeting.cs" />
     <Compile Include="Program.cs" />
